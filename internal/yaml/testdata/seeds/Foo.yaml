@@ -1,0 +1,9 @@
+---
+- FooID: 'e70946a8-2fb8-4457-96b1-d64c0d8d124c'
+  Name: foo1
+
+- FooID: '0b64da62-5895-4a7d-97bd-928ac8aaa076'
+  Name: foo2
+
+- FooID: 'bcc0d0df-81bf-41b5-9427-9deb5e8f76f4'
+  Name: foo3

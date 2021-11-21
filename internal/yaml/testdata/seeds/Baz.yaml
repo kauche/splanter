@@ -1,0 +1,15 @@
+---
+- FooID: 'e70946a8-2fb8-4457-96b1-d64c0d8d124c'
+  BarID: '208b6571-c140-4c2b-a9d5-b581fb062a77'
+  BazID: '748eb1a4-6c2b-44d2-a549-db725865d9d6'
+  Name: baz1
+
+- FooID: '0b64da62-5895-4a7d-97bd-928ac8aaa076'
+  BarID: '10bb9433-559a-4b03-9361-d9cce55ec17c'
+  BazID: '373388b5-a7e4-4112-a898-ac0818ceefa4'
+  Name: baz2
+
+- FooID: 'e70946a8-2fb8-4457-96b1-d64c0d8d124c'
+  BarID: 'bcc0d0df-81bf-41b5-9427-9deb5e8f76f4'
+  BazID: '8c8cafab-830c-4f12-a5d8-a6bda10e912f'
+  Name: baz3
