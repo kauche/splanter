@@ -42,8 +42,18 @@ func (d *DB) Save(ctx context.Context, tables []*model.Table) error {
 }
 
 func (d *DB) sortTablesByDependencies(ctx context.Context, tables []*model.Table) error {
+	tableNames := make([]string, len(tables))
+	for i, t := range tables {
+		tableNames[i] = t.Name
+	}
+
 	statement := spanner.Statement{
-		SQL: `SELECT TABLE_NAME, PARENT_TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = "BASE TABLE"`,
+		// NOTE: `WHERE TABLE_TYPE = "BASE TABLE"` is enough to select user tables, but spanner-emulator doesn't support it for now.
+		// SQL: `SELECT TABLE_NAME, PARENT_TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = "BASE TABLE"`,
+		SQL: `SELECT TABLE_NAME, PARENT_TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME IN UNNEST (@tables)`,
+		Params: map[string]interface{}{
+			"tables": tableNames,
+		},
 	}
 
 	tableMap := make(map[string]*informationSchemaTable)
