@@ -3,6 +3,7 @@ package command
 import (
 	"context"
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/110y/splanter/internal/spanner"
@@ -22,33 +23,40 @@ func exec(ctx context.Context) int {
 	flag.Parse()
 
 	if *project == "" {
+		fmt.Fprint(os.Stderr, "must specify --project")
 		return 1
 	}
 
 	if *instance == "" {
+		fmt.Fprint(os.Stderr, "must specify --instance")
 		return 1
 	}
 
 	if *database == "" {
+		fmt.Fprint(os.Stderr, "must specify --database")
 		return 1
 	}
 
 	if *directory == "" {
+		fmt.Fprint(os.Stderr, "must specify --directory")
 		return 1
 	}
 
 	loader := yaml.NewLoader()
 	tables, err := loader.Load(ctx, *directory)
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to load yaml files: %s", err.Error())
 		return 1
 	}
 
 	db, err := spanner.NewDB(ctx, *project, *instance, *database)
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to connect to spanner: %s", err.Error())
 		return 1
 	}
 
 	if err := db.Save(ctx, tables); err != nil {
+		fmt.Fprintf(os.Stderr, "failed to load data to spanner tables: %s", err.Error())
 		return 1
 	}
 
