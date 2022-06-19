@@ -6,7 +6,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/110y/splanter/internal/model"
+	"github.com/kauche/splanter/internal/model"
 )
 
 func TestLoad(t *testing.T) {

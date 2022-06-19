@@ -7,7 +7,7 @@ import (
 
 	"cloud.google.com/go/spanner"
 
-	"github.com/110y/splanter/internal/model"
+	"github.com/kauche/splanter/internal/model"
 )
 
 type DB struct {

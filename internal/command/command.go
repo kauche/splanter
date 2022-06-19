@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/110y/splanter/internal/spanner"
-	"github.com/110y/splanter/internal/yaml"
+	"github.com/kauche/splanter/internal/spanner"
+	"github.com/kauche/splanter/internal/yaml"
 )
 
 func Exec() {

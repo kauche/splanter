@@ -9,7 +9,7 @@ import (
 	"cloud.google.com/go/spanner"
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/110y/splanter/internal/model"
+	"github.com/kauche/splanter/internal/model"
 )
 
 type foo struct {
