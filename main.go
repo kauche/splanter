@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/110y/splanter/internal/command"
+	"github.com/kauche/splanter/internal/command"
 )
 
 func main() {

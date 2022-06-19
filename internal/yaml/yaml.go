@@ -11,7 +11,7 @@ import (
 
 	"github.com/goccy/go-yaml"
 
-	"github.com/110y/splanter/internal/model"
+	"github.com/kauche/splanter/internal/model"
 )
 
 type Loader struct{}
