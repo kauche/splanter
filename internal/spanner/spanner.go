@@ -22,6 +22,10 @@ func NewDB(ctx context.Context, project, instance, database string) (*DB, error)
 	return &DB{client: client}, nil
 }
 
+func (d *DB) Close() {
+	d.client.Close()
+}
+
 func (d *DB) Save(ctx context.Context, tables []*model.Table) error {
 	if err := d.sortTablesByDependencies(ctx, tables); err != nil {
 		return fmt.Errorf("failed to sort tables: %w", err)

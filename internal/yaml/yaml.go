@@ -35,6 +35,7 @@ func (l *Loader) Load(ctx context.Context, dir string) ([]*model.Table, error) {
 			if err != nil {
 				return fmt.Errorf("failed to open yaml file: %w", err)
 			}
+			defer file.Close()
 
 			seeds, err := io.ReadAll(file)
 			if err != nil {

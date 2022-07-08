@@ -54,6 +54,7 @@ func exec(ctx context.Context) int {
 		fmt.Fprintf(os.Stderr, "failed to connect to spanner: %s", err.Error())
 		return 1
 	}
+	defer db.Close()
 
 	if err := db.Save(ctx, tables); err != nil {
 		fmt.Fprintf(os.Stderr, "failed to load data to spanner tables: %s", err.Error())
