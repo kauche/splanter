@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  spanner:
+    image: gcr.io/cloud-spanner-emulator/emulator:1.4.3
+    ports:
+      - ${SPANNER_EMULATOR_GRPC_PORT-9010}:9010
+      - ${SPANNER_EMULATOR_REST_PORT-9020}:9020
