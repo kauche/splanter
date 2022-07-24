@@ -1,5 +1,13 @@
+-include .env
+SPANNER_EMULATOR_GRPC_PORT ?= 9010
+SPANNER_EMULATOR_REST_PORT ?= 9020
+
 BIN_DIR := ./.bin
 WRENCH := $(abspath $(BIN_DIR)/wrench)
+
+EMULATOR_SPANNER_PROJECT = xxx
+EMULATOR_SPANNER_INSTANCE = splanter-test
+EMULATOR_SPANNER_DATABASE = splanter-test
 
 .PHONY: test
 test:
@@ -11,3 +19,30 @@ test:
 wrench: $(WRENCH)
 $(WRENCH): $(TOOLS_SUM)
 	@cd tools && go build -o $(WRENCH) github.com/cloudspannerecosystem/wrench
+
+.PHONY: test-docker
+test-docker: $(WRENCH)
+	docker compose stop
+	docker compose up --detach
+
+	docker run --rm --network splanter_default jwilder/dockerize:0.6.1 -wait tcp://spanner:9010 -timeout 10s
+
+	SPANNER_EMULATOR_HOST=localhost:$(SPANNER_EMULATOR_GRPC_PORT) $(WRENCH) instance create \
+		--project=$(EMULATOR_SPANNER_PROJECT) \
+		--instance=$(EMULATOR_SPANNER_INSTANCE)
+	SPANNER_EMULATOR_HOST=localhost:$(SPANNER_EMULATOR_GRPC_PORT) $(WRENCH) create \
+		--project=$(EMULATOR_SPANNER_PROJECT) \
+		--instance=$(EMULATOR_SPANNER_INSTANCE) \
+		--database=$(EMULATOR_SPANNER_DATABASE) \
+		--directory ./internal/spanner/testdata
+
+	docker run \
+		--rm \
+		--volume "$(shell pwd):/src" \
+		--workdir /src \
+		--network splanter_default \
+		--env SPANNER_EMULATOR_HOST=spanner:9010 \
+		--env SPANNER_PROJECT=$(EMULATOR_SPANNER_PROJECT) \
+		--env SPANNER_INSTANCE=$(EMULATOR_SPANNER_INSTANCE) \
+		--env SPANNER_DATABASE=$(EMULATOR_SPANNER_DATABASE) \
+		golang:1.18.4-bullseye make test

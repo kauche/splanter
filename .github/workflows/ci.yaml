@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+
+  test:
+    permissions:
+      contents: 'read'
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3.0.2
+
+      - name: Dependencies
+        run: |
+          docker run \
+            --rm \
+            --volume "$(pwd):/src" \
+            --workdir /src \
+            golang:1.18.4-bullseye make wrench
+
+      - name: Test
+        run: |
+          make test-docker
