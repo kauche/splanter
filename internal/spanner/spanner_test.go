@@ -94,6 +94,25 @@ func TestSave(t *testing.T) {
 				},
 			},
 		},
+		{
+			Name: "Boo",
+			Records: []*model.Record{
+				{
+					Values: map[string]interface{}{
+						"BazID": "b8f18085-7fa7-4845-a88a-7fbc7468489c",
+						"BooID": "25746814-9347-4766-b27a-07cdd92bbd4a",
+						"Name":  "boo1",
+					},
+				},
+				{
+					Values: map[string]interface{}{
+						"BazID": "17291658-8f9b-4166-8599-988451228493",
+						"BooID": "2ede531d-6965-46d8-bd94-2d392d944f70",
+						"Name":  "boo2",
+					},
+				},
+			},
+		},
 	})
 	if err != nil {
 		t.Errorf("failed to save: %s", err)

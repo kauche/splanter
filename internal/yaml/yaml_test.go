@@ -77,6 +77,32 @@ func TestLoad(t *testing.T) {
 			},
 		},
 		{
+			Name: "Boo",
+			Records: []*model.Record{
+				{
+					Values: map[string]interface{}{
+						"BazID": "748eb1a4-6c2b-44d2-a549-db725865d9d6",
+						"BooID": "86e27352-3352-4415-be2f-2522cfbdfbcf",
+						"Name":  "boo1",
+					},
+				},
+				{
+					Values: map[string]interface{}{
+						"BazID": "373388b5-a7e4-4112-a898-ac0818ceefa4",
+						"BooID": "b9c9bd23-1c0b-434c-a553-de7791870c79",
+						"Name":  "boo2",
+					},
+				},
+				{
+					Values: map[string]interface{}{
+						"BazID": "8c8cafab-830c-4f12-a5d8-a6bda10e912f",
+						"BooID": "39150a7d-b9be-4fec-8447-921d8cc3dd51",
+						"Name":  "boo3",
+					},
+				},
+			},
+		},
+		{
 			Name: "Foo",
 			Records: []*model.Record{
 				{
