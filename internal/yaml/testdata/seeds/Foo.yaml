@@ -7,3 +7,7 @@
 
 - FooID: 'bcc0d0df-81bf-41b5-9427-9deb5e8f76f4'
   Name: foo3
+
+# Test for the integer value
+- FooID: 123
+  Name: foo4
