@@ -58,7 +58,13 @@ func (l *Loader) Load(ctx context.Context, dir string) ([]*model.Table, error) {
 						return fmt.Errorf("failed to unmarshal yaml proparty: %w", err)
 					}
 
-					records[i].Values[key] = p.Value
+					// Spanner does not support the type uint64
+					val, ok := p.Value.(uint64)
+					if ok {
+						records[i].Values[key] = int64(val)
+					} else {
+						records[i].Values[key] = p.Value
+					}
 				}
 
 			}

@@ -123,6 +123,12 @@ func TestLoad(t *testing.T) {
 						"Name":  "foo3",
 					},
 				},
+				{
+					Values: map[string]interface{}{
+						"FooID": int64(123),
+						"Name":  "foo4",
+					},
+				},
 			},
 		},
 	}
