@@ -6,6 +6,7 @@ import (
 	"sort"
 
 	"cloud.google.com/go/spanner"
+	spannerpb "google.golang.org/genproto/googleapis/spanner/v1"
 
 	"github.com/kauche/splanter/internal/model"
 )
@@ -38,7 +39,7 @@ func (d *DB) Save(ctx context.Context, tables []*model.Table) error {
 		}
 	}
 
-	if _, err := d.client.Apply(ctx, mutations); err != nil {
+	if _, err := d.client.Apply(ctx, mutations, spanner.Priority(spannerpb.RequestOptions_PRIORITY_LOW)); err != nil {
 		return fmt.Errorf("failed to insert records: %w", err)
 	}
 
