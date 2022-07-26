@@ -1,0 +1,16 @@
+---
+# Values are need to be encoded as documented.
+# https://cloud.google.com/spanner/docs/reference/rpc/google.spanner.v1#google.spanner.v1.TypeCode
+- ID: "All_Type_Values"
+  BoolValue: true
+  BytesValue: "aG9nZQ==" # base64("hoge")
+  DateValue: "2022-04-01"
+  Float64Value: 3.14159
+  Int64Value: 42
+  JSONValue: '{"test": 1}'
+  NumericValue: "-12345678901234567890123456789.123456789"
+  StringValue: "FooBar"
+  TimestampValue: "2022-04-01T00:00:00Z"
+  # StringArray:
+  #   - "Foo"
+  #   - "Bar"

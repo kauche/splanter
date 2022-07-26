@@ -3,9 +3,12 @@ package spanner
 import (
 	"context"
 	"fmt"
+	"math/big"
 	"os"
 	"testing"
+	"time"
 
+	"cloud.google.com/go/civil"
 	"cloud.google.com/go/spanner"
 	"github.com/google/go-cmp/cmp"
 
@@ -28,6 +31,20 @@ type baz struct {
 	BarID string `spanner:"BarID"`
 	BazID string `spanner:"BazID"`
 	Name  string `spanner:"Name"`
+}
+
+type allTypes struct {
+	ID             string           `spanner:"ID"`
+	StringValue    string           `spanner:"StringValue"`
+	BoolValue      bool             `spanner:"BoolValue"`
+	Int64Value     int64            `spanner:"Int64Value"`
+	Float64Value   float64          `spanner:"Float64Value"`
+	JSONValue      spanner.NullJSON `spanner:"JSONValue"`
+	BytesValue     []byte           `spanner:"BytesValue"`
+	TimestampValue time.Time        `spanner:"TimestampValue"`
+	NumericValue   *big.Rat         `spanner:"NumericValue"`
+	DateValue      civil.Date       `spanner:"DateValue"`
+	StringArray    []string         `spanner:"StringArray"`
 }
 
 func TestSave(t *testing.T) {
@@ -109,6 +126,27 @@ func TestSave(t *testing.T) {
 						"BazID": "17291658-8f9b-4166-8599-988451228493",
 						"BooID": "2ede531d-6965-46d8-bd94-2d392d944f70",
 						"Name":  "boo2",
+					},
+				},
+			},
+		},
+		{
+			Name: "AllTypes",
+			Records: []*model.Record{
+				{
+					Values: map[string]interface{}{
+						"DateValue":      "2022-04-01",
+						"Float64Value":   float64(3.14159),
+						"ID":             "All_Type_Values",
+						"Int64Value":     int64(42),
+						"JSONValue":      `{"test": 1}`,
+						"NumericValue":   "-12345678901234567890123456789.123456789",
+						"StringValue":    "FooBar",
+						"TimestampValue": "2022-04-01T00:00:00Z",
+						// Commented out because it is not yet supported.
+						// "StringArray":    []interface{}{"Foo", "Bar"},
+						"BoolValue":  true,
+						"BytesValue": "aG9nZQ==",
 					},
 				},
 			},
@@ -215,6 +253,46 @@ func TestSave(t *testing.T) {
 		},
 	}
 	if diff := cmp.Diff(actualBazs, expectedBazs); diff != "" {
+		t.Errorf("\n(-actual, +expected)\n%s", diff)
+	}
+
+	var actualAllTypes []*allTypes
+	err = db.client.ReadOnlyTransaction().Query(ctx, spanner.Statement{
+		SQL: "SELECT * FROM AllTypes ORDER BY ID",
+	}).Do(func(row *spanner.Row) error {
+		b := new(allTypes)
+		if err = row.ToStruct(b); err != nil {
+			return fmt.Errorf("failed to populate allTypes by rows: %w", err)
+		}
+		actualAllTypes = append(actualAllTypes, b)
+
+		return nil
+	})
+	if err != nil {
+		t.Errorf("failed to select AllTypes: %s", err)
+		return
+	}
+	expectedNumeric, _ := new(big.Rat).SetString("-12345678901234567890123456789.123456789")
+	expectedAllTypes := []*allTypes{
+		{
+			ID:             "All_Type_Values",
+			StringValue:    "FooBar",
+			BoolValue:      true,
+			Int64Value:     42,
+			Float64Value:   3.14159,
+			JSONValue:      spanner.NullJSON{Value: map[string]interface{}{"test": float64(1)}, Valid: true},
+			BytesValue:     []byte{'h', 'o', 'g', 'e'},
+			TimestampValue: time.Date(2022, time.April, 1, 0, 0, 0, 0, time.UTC),
+			NumericValue:   expectedNumeric,
+			DateValue:      civil.Date{2022, time.April, 1},
+		},
+	}
+	if diff := cmp.Diff(actualAllTypes, expectedAllTypes, cmp.Comparer(func(x, y *big.Rat) bool {
+		if x == nil || y == nil {
+			return false
+		}
+		return x.Cmp(y) == 0
+	})); diff != "" {
 		t.Errorf("\n(-actual, +expected)\n%s", diff)
 	}
 }
