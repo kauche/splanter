@@ -3,11 +3,24 @@ SPANNER_EMULATOR_GRPC_PORT ?= 9010
 SPANNER_EMULATOR_REST_PORT ?= 9020
 
 BIN_DIR := ./.bin
+
+GORELEASER_VERSION = 1.10.2
+
 WRENCH := $(abspath $(BIN_DIR)/wrench)
+GORELEASER := $(abspath $(BIN_DIR)/goreleaser-$(GORELEASER_VERSION))
 
 EMULATOR_SPANNER_PROJECT = xxx
 EMULATOR_SPANNER_INSTANCE = splanter-test
 EMULATOR_SPANNER_DATABASE = splanter-test
+
+wrench: $(WRENCH)
+$(WRENCH): $(TOOLS_SUM)
+	@cd tools && go build -o $(WRENCH) github.com/cloudspannerecosystem/wrench
+
+goreleaser: $(GORELEASER)
+$(GORELEASER):
+	@curl -sSL "https://github.com/goreleaser/goreleaser/releases/download/v$(GORELEASER_VERSION)/goreleaser_$(shell uname -s)_$(shell uname -m).tar.gz" | tar -C $(BIN_DIR) -xzv goreleaser
+	@mv ./$(BIN_DIR)/goreleaser $(GORELEASER)
 
 .PHONY: test
 test:
@@ -15,10 +28,6 @@ test:
 		SPANNER_INSTANCE=${SPANNER_INSTANCE} \
 		SPANNER_DATABASE=${SPANNER_DATABASE} \
 		go test -race -shuffle=on ./...
-
-wrench: $(WRENCH)
-$(WRENCH): $(TOOLS_SUM)
-	@cd tools && go build -o $(WRENCH) github.com/cloudspannerecosystem/wrench
 
 .PHONY: test-docker
 test-docker: $(WRENCH)
