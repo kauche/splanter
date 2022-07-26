@@ -55,3 +55,7 @@ test-docker: $(WRENCH)
 		--env SPANNER_INSTANCE=$(EMULATOR_SPANNER_INSTANCE) \
 		--env SPANNER_DATABASE=$(EMULATOR_SPANNER_DATABASE) \
 		golang:1.18.4-bullseye make test
+
+.PHONY: release
+release: $(GORELEASER)
+	$(GORELEASER) release
