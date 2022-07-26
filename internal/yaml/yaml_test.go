@@ -22,6 +22,26 @@ func TestLoad(t *testing.T) {
 
 	expected := []*model.Table{
 		{
+			Name: "AllTypes",
+			Records: []*model.Record{
+				{
+					Values: map[string]interface{}{
+						"DateValue":      "2022-04-01",
+						"Float64Value":   float64(3.14159),
+						"ID":             "All_Type_Values",
+						"Int64Value":     int64(42),
+						"JSONValue":      `{"test": 1}`,
+						"NumericValue":   string("-12345678901234567890123456789.123456789"),
+						"StringValue":    "FooBar",
+						"TimestampValue": "2022-04-01T00:00:00Z",
+						// "StringArray":    []interface{}{"Foo", "Bar"},
+						"BoolValue":  true,
+						"BytesValue": "aG9nZQ==",
+					},
+				},
+			},
+		},
+		{
 			Name: "Bar",
 			Records: []*model.Record{
 				{

@@ -24,3 +24,17 @@ CREATE TABLE Boo (
   Name STRING(MAX),
   CONSTRAINT FK_BooBaz FOREIGN KEY (BazID) REFERENCES Baz (BazID)
 ) PRIMARY KEY(BooID);
+
+CREATE TABLE AllTypes (
+  ID STRING(MAX) NOT NULL,
+  BoolValue BOOL,
+  Int64Value INT64,
+  Float64Value FLOAT64,
+  TimestampValue TIMESTAMP,
+  DateValue DATE,
+  StringValue STRING(MAX),
+  BytesValue BYTES(MAX),
+  NumericValue NUMERIC,
+  JSONValue JSON,
+  StringArray ARRAY<STRING(MAX)>,
+) PRIMARY KEY(ID);
