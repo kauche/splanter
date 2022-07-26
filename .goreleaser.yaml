@@ -25,7 +25,7 @@ checksum:
   name_template: 'checksums.txt'
 
 changelog:
-  use: github-native
+  use: github
   sort: asc
   filters:
     exclude:
