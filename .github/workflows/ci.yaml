@@ -21,7 +21,7 @@ jobs:
             --rm \
             --volume "$(pwd):/src" \
             --workdir /src \
-            golang:1.19.0-bullseye make wrench
+            golang:1.19.1-bullseye make wrench
 
       - name: Test
         run: |
