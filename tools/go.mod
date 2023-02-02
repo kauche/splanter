@@ -1,6 +1,6 @@
 module github.com/kauche/splanter/tools
 
-go 1.19
+go 1.20
 
 require github.com/cloudspannerecosystem/wrench v1.0.5-0.20220228015714-9f346f268057
 
