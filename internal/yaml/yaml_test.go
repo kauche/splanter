@@ -26,6 +26,8 @@ func TestLoad(t *testing.T) {
 			Records: []*model.Record{
 				{
 					Values: map[string]interface{}{
+						"BoolValue":      true,
+						"BytesValue":     "aG9nZQ==",
 						"DateValue":      "2022-04-01",
 						"Float64Value":   float64(3.14159),
 						"ID":             "All_Type_Values",
@@ -34,9 +36,15 @@ func TestLoad(t *testing.T) {
 						"NumericValue":   string("-12345678901234567890123456789.123456789"),
 						"StringValue":    "FooBar",
 						"TimestampValue": "2022-04-01T00:00:00Z",
-						// "StringArray":    []interface{}{"Foo", "Bar"},
-						"BoolValue":  true,
-						"BytesValue": "aG9nZQ==",
+						"BoolArray":      []bool{true, false},
+						"BytesArray":     []string{"aG9nZQ==", "aG9nZQ=="},
+						"DateArray":      []string{"2022-04-01", "2022-04-02"},
+						"Fload64Array":   []float64{12.34, 56.789},
+						"Int64Array":     []int64{12, 34},
+						"JSONArray":      []string{`{"test": 1}`, `{"test": 2}`},
+						"NumericArray":   []string{"-12345678901234567890123456789.123456789", "-12345678901234567890123456789.123456789"},
+						"StringArray":    []string{"Foo", "Bar"},
+						"TimestampArray": []string{"2022-04-01T00:00:00Z", "2022-04-02T00:00:00Z"},
 					},
 				},
 			},

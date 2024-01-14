@@ -34,17 +34,25 @@ type baz struct {
 }
 
 type allTypes struct {
-	ID             string           `spanner:"ID"`
-	StringValue    string           `spanner:"StringValue"`
-	BoolValue      bool             `spanner:"BoolValue"`
-	Int64Value     int64            `spanner:"Int64Value"`
-	Float64Value   float64          `spanner:"Float64Value"`
-	JSONValue      spanner.NullJSON `spanner:"JSONValue"`
-	BytesValue     []byte           `spanner:"BytesValue"`
-	TimestampValue time.Time        `spanner:"TimestampValue"`
-	NumericValue   *big.Rat         `spanner:"NumericValue"`
-	DateValue      civil.Date       `spanner:"DateValue"`
-	StringArray    []string         `spanner:"StringArray"`
+	ID             string             `spanner:"ID"`
+	StringValue    string             `spanner:"StringValue"`
+	BoolValue      bool               `spanner:"BoolValue"`
+	Int64Value     int64              `spanner:"Int64Value"`
+	Float64Value   float64            `spanner:"Float64Value"`
+	JSONValue      spanner.NullJSON   `spanner:"JSONValue"`
+	BytesValue     []byte             `spanner:"BytesValue"`
+	TimestampValue time.Time          `spanner:"TimestampValue"`
+	NumericValue   *big.Rat           `spanner:"NumericValue"`
+	DateValue      civil.Date         `spanner:"DateValue"`
+	StringArray    []string           `spanner:"StringArray"`
+	BoolArray      []bool             `spanner:"BoolArray"`
+	Int64Array     []int64            `spanner:"Int64Array"`
+	Float64Array   []float64          `spanner:"Float64Array"`
+	JSONArray      []spanner.NullJSON `spanner:"JSONArray"`
+	BytesArray     [][]byte           `spanner:"BytesArray"`
+	TimestampArray []time.Time        `spanner:"TimestampArray"`
+	NumericArray   []*big.Rat         `spanner:"NumericArray"`
+	DateArray      []civil.Date       `spanner:"DateArray"`
 }
 
 func TestSave(t *testing.T) {
@@ -143,10 +151,17 @@ func TestSave(t *testing.T) {
 						"NumericValue":   "-12345678901234567890123456789.123456789",
 						"StringValue":    "FooBar",
 						"TimestampValue": "2022-04-01T00:00:00Z",
-						// Commented out because it is not yet supported.
-						// "StringArray":    []interface{}{"Foo", "Bar"},
-						"BoolValue":  true,
-						"BytesValue": "aG9nZQ==",
+						"BoolValue":      true,
+						"BytesValue":     "aG9nZQ==",
+						"StringArray":    []string{"Foo", "Bar"},
+						"BoolArray":      []bool{true, false},
+						"Int64Array":     []int64{12, 34},
+						"Float64Array":   []float64{12.34, 56.789},
+						"JSONArray":      []string{`{"test": 1}`, `{"test": 2}`},
+						"BytesArray":     []string{"aG9nZQ==", "aG9nZQ=="},
+						"TimestampArray": []string{"2022-04-01T00:00:00Z", "2022-04-02T00:00:00Z"},
+						"NumericArray":   []string{"-12345678901234567890123456789.123456789", "-12345678901234567890123456789.123456789"},
+						"DateArray":      []string{"2022-04-01", "2022-04-02"},
 					},
 				},
 			},
@@ -284,7 +299,25 @@ func TestSave(t *testing.T) {
 			BytesValue:     []byte{'h', 'o', 'g', 'e'},
 			TimestampValue: time.Date(2022, time.April, 1, 0, 0, 0, 0, time.UTC),
 			NumericValue:   expectedNumeric,
-			DateValue:      civil.Date{2022, time.April, 1},
+			DateValue:      civil.Date{Year: 2022, Month: time.April, Day: 1},
+			StringArray:    []string{"Foo", "Bar"},
+			BoolArray:      []bool{true, false},
+			Float64Array:   []float64{12.34, 56.789},
+			Int64Array:     []int64{12, 34},
+			JSONArray: []spanner.NullJSON{
+				{Value: map[string]interface{}{"test": float64(1)}, Valid: true},
+				{Value: map[string]interface{}{"test": float64(2)}, Valid: true},
+			},
+			BytesArray: [][]byte{{'h', 'o', 'g', 'e'}, {'h', 'o', 'g', 'e'}},
+			TimestampArray: []time.Time{
+				time.Date(2022, time.April, 1, 0, 0, 0, 0, time.UTC),
+				time.Date(2022, time.April, 2, 0, 0, 0, 0, time.UTC),
+			},
+			NumericArray: []*big.Rat{expectedNumeric, expectedNumeric},
+			DateArray: []civil.Date{
+				{Year: 2022, Month: time.April, Day: 1},
+				{Year: 2022, Month: time.April, Day: 2},
+			},
 		},
 	}
 	if diff := cmp.Diff(actualAllTypes, expectedAllTypes, cmp.Comparer(func(x, y *big.Rat) bool {

@@ -37,4 +37,12 @@ CREATE TABLE AllTypes (
   NumericValue NUMERIC,
   JSONValue JSON,
   StringArray ARRAY<STRING(MAX)>,
+  BoolArray ARRAY<Bool>,
+  Int64Array ARRAY<INT64>,
+  Float64Array ARRAY<FLOAT64>,
+  TimestampArray ARRAY<TIMESTAMP>,
+  DateArray ARRAY<DATE>,
+  BytesArray ARRAY<BYTES(MAX)>,
+  NumericArray ARRAY<NUMERIC>,
+  JSONArray ARRAY<JSON>,
 ) PRIMARY KEY(ID);
