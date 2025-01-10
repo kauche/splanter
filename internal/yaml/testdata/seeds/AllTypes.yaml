@@ -11,6 +11,30 @@
   NumericValue: "-12345678901234567890123456789.123456789"
   StringValue: "FooBar"
   TimestampValue: "2022-04-01T00:00:00Z"
-  # StringArray:
-  #   - "Foo"
-  #   - "Bar"
+  BoolArray:
+    - true
+    - false
+  BytesArray:
+    - "aG9nZQ==" # base64("hoge")
+    - "aG9nZQ==" # base64("hoge")
+  DateArray:
+    - "2022-04-01"
+    - "2022-04-02"
+  Fload64Array:
+    - 12.34
+    - 56.789
+  Int64Array:
+    - 12
+    - 34
+  JSONArray:
+    - '{"test": 1}'
+    - '{"test": 2}'
+  NumericArray:
+    - "-12345678901234567890123456789.123456789"
+    - "-12345678901234567890123456789.123456789"
+  StringArray:
+    - "Foo"
+    - "Bar"
+  TimestampArray:
+    - "2022-04-01T00:00:00Z"
+    - "2022-04-02T00:00:00Z"
